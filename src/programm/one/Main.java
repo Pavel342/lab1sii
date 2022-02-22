@@ -32,8 +32,8 @@ public class Main {
                     kaif = false;
                     smena(w, be, nn, x, i);
                 }
-                if (!kaif) System.out.println("Не верно");
-                else System.out.println("Верно");
+                //if (!kaif) System.out.println("Не верно");
+                //else System.out.println("Верно");
                 kaif = true;
                 net=0;
             }

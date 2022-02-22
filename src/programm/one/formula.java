@@ -5,7 +5,7 @@ public class formula {
         float net = 0;
         int[] y = new int[16];
         float f;
-        float nn = 0.5F;//норма обучения
+        float nn = 0.3F;//норма обучения
         int k = 0;//эпоха
         float[] w = new float[]{0, 0, 0, 0, 0};
         int[][] x = {{1, 0, 0, 0, 0}, {1, 0, 0, 0, 1}, {1, 0, 0, 1, 0}, {1, 0, 0, 1, 1}, {1, 0, 1, 0, 0}, {1, 0, 1, 0, 1}, {1, 0, 1, 1, 0}, {1, 0, 1, 1, 1}, {1, 1, 0, 0, 0}, {1, 1, 0, 0, 1}, {1, 1, 0, 1, 0}, {1, 1, 0, 1, 1}, {1, 1, 1, 0, 0}, {1, 1, 1, 0, 1}, {1, 1, 1, 1, 0}, {1, 1, 1, 1, 1}};
@@ -24,7 +24,7 @@ public class formula {
                     net += w[j] * x[i][j];
                 }
                 net += w[0];
-                f = (float) (1 / (1 + Math.E * (-1 * net)));
+                f = (float) (((net/(1+Math.abs(net)))+1)/2);
                 if (f >= 0.5) y[i] = 1;
                 else y[i] = 0;
                 be =  otveti[i]-y[i] ;
@@ -32,10 +32,10 @@ public class formula {
                 else {
                     sumMis++;
                     kaif = false;
-                    smena(w, be, nn, x, i, f);
+                    smena(w, be, nn, x, i, net);
                 }
-                if (!kaif) System.out.println("Не верно");
-                else System.out.println("Верно");
+               // if (!kaif) System.out.println("Не верно");
+               // else System.out.println("Верно");
                 kaif = true;
                 net=0;
             }
@@ -45,9 +45,9 @@ public class formula {
 
     }
 
-    public static float[] smena ( float[] w, int be, float nn, int[][] x, int l, float f){
+    public static float[] smena ( float[] w, int be, float nn, int[][] x, int l, float net){
         for (int i = 0; i < 5; i++) {
-            w[i] = w[i]+ f*(1-f) * nn * be * x[l][i];
+            w[i] = (float) (w[i]+ ((-1)*0.5*(net/((net+1)*(net+1)))+0.5/(net+1)) * nn * be * x[l][i]);
         }
         return w;
     }
